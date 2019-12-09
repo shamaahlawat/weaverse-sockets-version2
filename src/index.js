@@ -3,7 +3,11 @@ import SocketIO from "socket.io"
 import http from "http"
 
 import './db';
-import { roomJoin, onMessage } from "./controller";
+import {
+    roomJoin,
+    onMessage,
+    onAuth
+} from "./controller";
 
 
 const app = express();
@@ -15,8 +19,11 @@ server.listen(PORT, () => console.log(`Chat Listening on port ${PORT}`)); // esl
 
 
 io.on('connection', (socket) => {
-    socket.user = true
     console.log('connected', socket.id);
+    //authenticate user 
+    socket.on('authentication', (userToken) => {
+        onAuth(socket, io, userToken)
+    })
 
     // Join the room
     socket.on("room_join", (msg) => {
@@ -28,6 +35,9 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log('user disconnected', socket.id, socket.user);
+        console.log('user disconnected', socket.id);
     });
 });
+
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYmVkY2NkZTU4ZDAwN2E0NWNjOTI4OCIsImVtYWlsIjoicmF2aS5zaW5naDIwOTFAZ21haWwuY29tIiwiaWF0IjoxNTc1ODc1NzQ0LCJleHAiOjE1NzY0ODA1NDR9.nCVudQYHur4yjQXrBhED3rzmmd1LbXnfu-3IQhBbUuU

@@ -1,8 +1,5 @@
 
-import bcrypt from 'bcrypt-nodejs';
 import mongoose from '../db';
-import { PASS_HASH_ROUNDS } from '../config';
-
 
 const UserSchema = new mongoose.Schema(
   {
@@ -34,50 +31,7 @@ const UserSchema = new mongoose.Schema(
 );
 
 
-UserSchema.methods.toJSON = function () {
-  const user = this;
-  const userObject = user.toObject()
-  delete userObject.password
-  return userObject
-}
 
-UserSchema.statics.findByCredentials = function (email, password) {
-  let User = this;
-  return User.findOne({ email }).then(user => {
-    if (!user) {
-      return Promise.reject({
-        code: 404,
-        msg: 'Invalid email, user not found'
-      });
-    }
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(password, user.password, (err, res) => {
-        if (res) {
-          resolve(user._doc);
-        } else {
-          reject({ code: 401, msg: 'Incorrect Password' });
-        }
-      });
-    });
-  });
-};
-
-UserSchema.pre('save', function (next) {
-  const user = this;
-  if (user.isModified('password')) {
-    bcrypt.genSalt(PASS_HASH_ROUNDS, (err, salt) => {
-      if (err) {
-        throw err;
-      }
-      bcrypt.hash(user.password, salt, null, (err, hash) => {
-        user.password = hash;
-        next();
-      });
-    });
-  } else {
-    next();
-  }
-});
 
 
 
