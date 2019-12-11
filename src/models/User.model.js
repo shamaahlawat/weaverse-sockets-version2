@@ -36,10 +36,3 @@ const UserSchema = new mongoose.Schema(
 
 
 var User = module.exports = mongoose.model('Users', UserSchema);
-
-
-
-
-
-
-

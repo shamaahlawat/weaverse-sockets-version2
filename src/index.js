@@ -25,6 +25,11 @@ io.on('connection', (socket) => {
         onAuth(socket, io, userToken)
     })
 
+    // Workspace Join the room
+    socket.on("workspace_room_join", (msg) => {
+        roomJoin(socket, io, msg)
+    })
+
     // Join the room
     socket.on("room_join", (msg) => {
         roomJoin(socket, io, msg)
