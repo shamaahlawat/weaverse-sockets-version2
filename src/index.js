@@ -20,6 +20,10 @@ const io = SocketIO(server);
 const { PORT = 8080 } = process.env;
 server.listen(PORT, () => console.log(`Chat Listening on port ${PORT}`)); // eslint-disable-line no-console
 
+app.get("/", (req, res) => {
+    res.send("Running")
+    console.log(req)
+})
 
 io.on('connection', (socket) => {
     console.log('connected', socket.id);
