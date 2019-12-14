@@ -6,7 +6,10 @@ import './db';
 import {
     roomJoin,
     onMessage,
-    onAuth
+    onAuth,
+    getRoom,
+    workspaceRoomJoin,
+    roomLeave
 } from "./controller";
 
 
@@ -27,12 +30,22 @@ io.on('connection', (socket) => {
 
     // Workspace Join the room
     socket.on("workspace_room_join", (msg) => {
-        roomJoin(socket, io, msg)
+        workspaceRoomJoin(socket, io, msg)
     })
+
+    //get user room id
+    socket.on("get_user_room", (data) => {
+        getRoom(socket, io, data)
+    })
+
 
     // Join the room
     socket.on("room_join", (msg) => {
         roomJoin(socket, io, msg)
+    })
+    // Join the room leave
+    socket.on("room_leave", (msg) => {
+        roomLeave(socket, io, msg)
     })
     // on message send
     socket.on("message", (msg) => {

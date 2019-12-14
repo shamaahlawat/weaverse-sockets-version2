@@ -23,7 +23,7 @@ export const onAuth = async (socket, io, token) => {
 
 
 
-        io.sockets.emit('authentication', { status: true, message: 'User found', token: socket.id });
+        io.sockets.emit('authentication', { status: true, message: 'User found', socket_token: socket.id });
         return
     } catch (err) {
         // eslint-disable-next-line no-console
