@@ -26,40 +26,49 @@ app.get("/", (req, res) => {
 })
 
 io.on('connection', (socket) => {
-    console.log('connected', socket.id);
+    console.log('--------------------->connected', socket.id);
     //authenticate user 
     socket.on('authentication', (userToken) => {
+        console.log('---------------------->authentication', { userToken })
         onAuth(socket, io, userToken)
     })
 
     // Workspace Join the room
     socket.on("workspace_room_join", (msg) => {
+        console.log('------------------------->workspace_room_join', { msg })
         workspaceRoomJoin(socket, io, msg)
     })
 
     //get user room id
-    socket.on("get_user_room", (data) => {
-        getRoom(socket, io, data)
+    socket.on("get_user_room", (msg) => {
+        console.log('------------------------->get_user_room', { msg })
+        getRoom(socket, io, msg)
     })
 
 
     // Join the room
     socket.on("room_join", (msg) => {
+        console.log('------------------------->get_user_room', { msg })
         roomJoin(socket, io, msg)
     })
     // Join the room leave
     socket.on("room_leave", (msg) => {
+        console.log('------------------------->get_user_room', { msg })
         roomLeave(socket, io, msg)
     })
     // on message send
     socket.on("message", (msg) => {
+        console.log('------------------------->get_user_room', { msg })
         onMessage(socket, io, msg)
     })
 
     socket.on('disconnect', () => {
-        console.log('user disconnected', socket.id);
+        console.log('--------------------------->user disconnected', socket.id);
     });
 });
 
 
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYmVkY2NkZTU4ZDAwN2E0NWNjOTI4OCIsImVtYWlsIjoicmF2aS5zaW5naDIwOTFAZ21haWwuY29tIiwiaWF0IjoxNTc1ODc1NzQ0LCJleHAiOjE1NzY0ODA1NDR9.nCVudQYHur4yjQXrBhED3rzmmd1LbXnfu-3IQhBbUuU
+
+
+//  heroku logs --tail -a=weaverse-sockets --source app
