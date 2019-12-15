@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
     //authenticate user 
     socket.on('authentication', (userToken) => {
         console.log('---------------------->authentication', { userToken })
-        onAuth(socket, io, userToken)
+        onAuth(socket, io, userToken.token)
     })
 
     // Workspace Join the room
