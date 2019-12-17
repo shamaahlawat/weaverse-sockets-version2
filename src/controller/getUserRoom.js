@@ -5,6 +5,7 @@ export const getRoom = async (socket, io, data) => {
         if (data.sender_id && data.receiver_id && data.workspace_id) {
             if (data.token != socket.id) {
                 io.sockets.emit('get_user_room', { status: false, message: "Invalid/Missing token" });
+                console.log("----------------------> after emmit get_user_room", { status: false, message: "Invalid/Missing token" })
                 return
             }
             var roomCriteria = {
@@ -25,6 +26,8 @@ export const getRoom = async (socket, io, data) => {
             let room = await Room.findOne(roomCriteria)
             if (room) {
                 io.sockets.emit('get_user_room', { status: true, room_id: room._id });
+                console.log("----------------------> after emmit get_user_room", { status: true, room_id: room._id })
+
                 return
             }
 
@@ -34,9 +37,11 @@ export const getRoom = async (socket, io, data) => {
                 "workspaceId": data.workspace_id,
             }).save()
             io.sockets.emit('get_user_room', { status: true, room_id: roomjson._id });
+            console.log("----------------------> after emmit get_user_room", { status: true, room_id: roomjson._id })
             return
         }
         io.sockets.emit('get_user_room', { status: false, message: "Invalid/Missing data" });
+        console.log("----------------------> after emmit get_user_room", { status: false, message: "Invalid/Missing data" })
     } catch (error) {
         console.log(error)
     }

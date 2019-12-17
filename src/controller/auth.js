@@ -7,23 +7,24 @@ export const onAuth = async (socket, io, token) => {
     try {
         if (!token) {
             io.sockets.emit('authentication', { status: false, message: INVALID_TOKEN });
+            console.log("---------------------> after emmit authentication", { status: false, message: INVALID_TOKEN })
             return
         }
         const decoded = await decodeJWT({ token });
         if (!decoded.id) {
             io.sockets.emit('authentication', { status: false, message: INVALID_TOKEN });
+            console.log("---------------------> after emmit authentication", { status: false, message: INVALID_TOKEN })
             return
         }
         const user = await User.findOne({ email: decoded.email });
         if (!user) {
             io.sockets.emit('authentication', { status: false, message: 'User not found' });
+            console.log("---------------------> after emmit authentication", { status: false, message: 'User not found' })
             return
         }
         socket.user = user
-
-
-
         io.sockets.emit('authentication', { status: true, message: 'User found', socket_token: socket.id });
+        console.log("---------------------> after emmit authentication", { status: true, message: 'User found', socket_token: socket.id })
         return
     } catch (err) {
         // eslint-disable-next-line no-console
