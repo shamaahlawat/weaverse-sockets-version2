@@ -4,7 +4,7 @@ export const onMessage = async (socket, io, msg) => {
     try {
         if (msg.token && msg.room_id && msg.workspace_id && msg.chat && msg.sender_id && msg.receiver_id) {
             if (msg.token != socket.id) {
-                io.sockets.emit('message', { status: false, message: "Invalid/Missing token" });
+                io.to(msg.room_id).emit('message', { status: false, message: "Invalid/Missing token" });
                 console.log("----------------------> after emmit message", { status: false, message: "Invalid/Missing token" })
                 return
             }
@@ -26,7 +26,7 @@ export const onMessage = async (socket, io, msg) => {
             await new Chat(chatData).save()
             return
         }
-        io.sockets.emit('message', { status: false, message: "Invalid/Missing data" });
+        io.to(msg.room_id).emit('message', { status: false, message: "Invalid/Missing data" });
         console.log("----------------------> after emmit message", { status: false, message: "Invalid/Missing data" })
     } catch (error) {
         console.log(error)

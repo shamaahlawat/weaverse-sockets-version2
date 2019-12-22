@@ -4,7 +4,7 @@ import mongoose from '../db';
 const ChatSchema = new mongoose.Schema(
     {
         roomId: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
             trim: true
         },
