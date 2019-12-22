@@ -48,17 +48,17 @@ io.on('connection', (socket) => {
 
     // Join the room
     socket.on("room_join", (msg) => {
-        console.log('------------------------->get_user_room', { msg })
+        console.log('------------------------->room_join', { msg })
         roomJoin(socket, io, msg)
     })
     // Join the room leave
     socket.on("room_leave", (msg) => {
-        console.log('------------------------->get_user_room', { msg })
+        console.log('------------------------->room_leave', { msg })
         roomLeave(socket, io, msg)
     })
     // on message send
     socket.on("message", (msg) => {
-        console.log('------------------------->get_user_room', { msg })
+        console.log('------------------------->message', { msg })
         onMessage(socket, io, msg)
     })
 
