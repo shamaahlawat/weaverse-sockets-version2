@@ -2,7 +2,7 @@ import { Chat } from '../models';
 
 export const onMessage = async (socket, io, msg) => {
     try {
-        if (msg.token && msg.isChannel && msg.room_id && msg.workspace_id && msg.chat && msg.sender_id && msg.receiver_id) {
+        if (msg.token && msg.room_id && msg.workspace_id && msg.chat && msg.sender_id && msg.receiver_id) {
             if (msg.token != socket.id) {
                 io.sockets.emit('message', { status: false, message: "Invalid/Missing token" });
                 console.log("----------------------> after emmit message", { status: false, message: "Invalid/Missing token" })

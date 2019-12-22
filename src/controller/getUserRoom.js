@@ -31,11 +31,13 @@ export const getRoom = async (socket, io, data) => {
                 return
             }
 
-            let roomjson = await new Room({
+            let roomjson = new Room({
                 "senderId": data.sender_id,
                 "receiverId": data.receiver_id,
                 "workspaceId": data.workspace_id,
-            }).save()
+            });
+
+            await roomjson.save();
             io.sockets.emit('get_user_room', { status: true, room_id: roomjson._id });
             console.log("----------------------> after emmit get_user_room", { status: true, room_id: roomjson._id })
             return
