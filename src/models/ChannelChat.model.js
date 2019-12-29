@@ -18,11 +18,6 @@ const ChatSchema = new mongoose.Schema(
             ref: "Users",
             required: true,
         },
-        receiverId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Users",
-            required: true,
-        },
         message: {
             type: String,
             trim: true
@@ -35,11 +30,11 @@ const ChatSchema = new mongoose.Schema(
             enum: ['text', 'file'],
             default: 'text'
         },
-        status: {
-            type: String,
-            enum: ['seen', 'unseen'],
-            default: 'seen'
-        }
+        seenUserId: [{
+            userId: mongoose.Schema.Types.ObjectId,
+            ref: 'Users'
+        }]
+
     }, { timestamps: true });
 
 
@@ -47,4 +42,4 @@ const ChatSchema = new mongoose.Schema(
 
 
 
-var Chat = module.exports = mongoose.model('Chats', ChatSchema);
+var ChannelChat = module.exports = mongoose.model('ChannelChats', ChatSchema);
