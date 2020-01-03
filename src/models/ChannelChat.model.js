@@ -31,8 +31,10 @@ const ChatSchema = new mongoose.Schema(
             default: 'text'
         },
         seenUserId: [{
-            userId: mongoose.Schema.Types.ObjectId,
-            ref: 'Users'
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Users'
+            }
         }]
 
     }, { timestamps: true });
