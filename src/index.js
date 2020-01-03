@@ -32,10 +32,11 @@ app.get("/", (req, res) => {
 io.on('connection', (socket) => {
     console.log('--------------------->connected', socket.id);
     //authenticate user 
-    socket.on('authentication', (userToken) => {
-        console.log('---------------------->authentication', { userToken })
-        onAuth(socket, io, userToken.token)
-    })
+
+    // socket.on('authentication', (userToken) => {
+    //     console.log('---------------------->authentication', { userToken })
+    //     onAuth(socket, io, userToken.token)
+    // })
 
     // Workspace Join the room
     socket.on("workspace_room_join", (msg) => {

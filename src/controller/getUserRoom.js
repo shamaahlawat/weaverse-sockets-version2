@@ -3,11 +3,11 @@ import { Room } from '../models';
 export const getRoom = async (socket, io, data) => {
     try {
         if (data.sender_id && data.receiver_id && data.workspace_id) {
-            if (data.token != socket.id) {
-                io.sockets.emit('get_user_room', { status: false, message: "Invalid/Missing token" });
-                console.log("----------------------> after emmit get_user_room", { status: false, message: "Invalid/Missing token" })
-                return
-            }
+            // if (data.token != socket.id) {
+            //     io.sockets.emit('get_user_room', { status: false, message: "Invalid/Missing token" });
+            //     console.log("----------------------> after emmit get_user_room", { status: false, message: "Invalid/Missing token" })
+            //     return
+            // }
             var roomCriteria = {
                 $or: [{
                     $and: [{
