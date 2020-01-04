@@ -51,7 +51,7 @@ export const workspaceRoomJoin = (socket, io, msg) => {
         // }
 
         socket.join(msg.workspace_id, () => {
-            socket.to(msg.workspace_id).emit("workspace_room_join", { status: true, msg: "Workspace room join" })
+            io.in(msg.workspace_id).emit("workspace_room_join", { status: true, msg: "Workspace room join" })
             console.log("----------------------> after emmit workspace_room_join", { status: true, msg: "Workspace room join" })
             return
         })
