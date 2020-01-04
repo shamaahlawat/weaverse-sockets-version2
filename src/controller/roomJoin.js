@@ -11,6 +11,8 @@ export const roomJoin = (socket, io, msg) => {
             console.log("----------------------> after emmit room_join", { status: true, msg: "room join", room_id: msg.room_id })
             return
         })
+
+    } else {
         io.sockets.emit('room_join', { status: false, message: "Invalid/Missing data" });
         console.log("----------------------> after emmit room_join", { status: false, message: "Invalid/Missing data" })
     }
@@ -29,9 +31,11 @@ export const roomLeave = (socket, io, msg) => {
             console.log("----------------------> after emmit room_leave", { status: true, msg: "room leave", room_id: msg.room_id })
             return
         })
+    } else {
+        io.sockets.emit('room_leave', { status: false, message: "Invalid/Missing data" });
+        console.log("----------------------> after emmit room_leave", { status: false, message: "Invalid/Missing data" })
     }
-    io.sockets.emit('room_leave', { status: false, message: "Invalid/Missing data" });
-    console.log("----------------------> after emmit room_leave", { status: false, message: "Invalid/Missing data" })
+
 }
 
 export const workspaceRoomJoin = (socket, io, msg) => {
@@ -48,8 +52,10 @@ export const workspaceRoomJoin = (socket, io, msg) => {
             console.log("----------------------> after emmit workspace_room_join", { status: true, msg: "Workspace room join" })
             return
         })
+    } else {
+        io.sockets.emit('workspace_room_join', { status: false, message: "Invalid/Missing data" });
+        console.log("----------------------> after emmit workspace_room_join", { status: false, message: "Invalid/Missing data" })
     }
-    io.sockets.emit('workspace_room_join', { status: false, message: "Invalid/Missing data" });
-    console.log("----------------------> after emmit workspace_room_join", { status: false, message: "Invalid/Missing data" })
+
 
 } 

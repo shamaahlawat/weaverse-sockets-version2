@@ -41,9 +41,12 @@ export const getRoom = async (socket, io, data) => {
             io.sockets.emit('get_user_room', { status: true, room_id: roomjson._id });
             console.log("----------------------> after emmit get_user_room", { status: true, room_id: roomjson._id })
             return
+        } else {
+            io.sockets.emit('get_user_room', { status: false, message: "Invalid/Missing data" });
+            console.log("----------------------> after emmit get_user_room", { status: false, message: "Invalid/Missing data" })
+
         }
-        io.sockets.emit('get_user_room', { status: false, message: "Invalid/Missing data" });
-        console.log("----------------------> after emmit get_user_room", { status: false, message: "Invalid/Missing data" })
+
     } catch (error) {
         console.log(error)
     }

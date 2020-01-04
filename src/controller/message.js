@@ -25,9 +25,11 @@ export const onMessage = async (socket, io, msg) => {
             delete (chatData.createdAt)
             await new Chat(chatData).save()
             return
+        } else {
+            io.to(msg.room_id).emit('message', { status: false, message: "Invalid/Missing data" });
+            console.log("----------------------> after emmit message", { status: false, message: "Invalid/Missing data" })
         }
-        io.to(msg.room_id).emit('message', { status: false, message: "Invalid/Missing data" });
-        console.log("----------------------> after emmit message", { status: false, message: "Invalid/Missing data" })
+
     } catch (error) {
         console.log(error)
     }
