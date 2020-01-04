@@ -8,7 +8,7 @@ export const roomJoin = (socket, io, msg) => {
         // }
 
         socket.join(msg.room_id, () => {
-            socket.to(msg.room_id).emit("room_join", { status: true, msg: "room join", room_id: msg.room_id })
+            io.in(msg.room_id).emit("room_join", { status: true, msg: "room join", room_id: msg.room_id })
             console.log("----------------------> after emmit room_join", { status: true, msg: "room join", room_id: msg.room_id })
             return
         })
@@ -29,7 +29,7 @@ export const roomLeave = (socket, io, msg) => {
         // }
 
         socket.leave(msg.room_id, () => {
-            socket.to(msg.room_id).emit("room_leave", { status: true, msg: "room leave", room_id: msg.room_id })
+            io.in(msg.room_id).emit("room_leave", { status: true, msg: "room leave", room_id: msg.room_id })
             console.log("----------------------> after emmit room_leave", { status: true, msg: "room leave", room_id: msg.room_id })
             return
         })
