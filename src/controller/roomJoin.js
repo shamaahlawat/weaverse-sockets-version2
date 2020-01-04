@@ -1,5 +1,6 @@
 export const roomJoin = (socket, io, msg) => {
-    if (msg.token && msg.room_id) {
+    if (msg.room_id) {
+        // msg.token && 
         // if (msg.token != socket.id) {
         //     io.sockets.emit('room_join', { status: false, message: "Invalid/Missing token" });
         //     console.log("----------------------> after emmit room_join", { status: false, message: "Invalid/Missing token" })
@@ -19,7 +20,8 @@ export const roomJoin = (socket, io, msg) => {
 }
 
 export const roomLeave = (socket, io, msg) => {
-    if (msg.token && msg.room_id) {
+    if (msg.room_id) {
+        // msg.token && 
         // if (msg.token != socket.id) {
         //     io.sockets.emit('room_leave', { status: false, message: "Invalid/Missing token" });
         //     console.log("----------------------> after emmit room_leave", { status: false, message: "Invalid/Missing token" })
@@ -40,7 +42,8 @@ export const roomLeave = (socket, io, msg) => {
 
 export const workspaceRoomJoin = (socket, io, msg) => {
 
-    if (msg.token && msg.workspace_id) {
+    if (msg.workspace_id) {
+        // msg.token &&
         // if (msg.token != socket.id) {
         //     io.sockets.emit('workspace_room_join', { status: false, message: "Invalid/Missing token" });
         //     console.log("----------------------> after emmit workspace_room_join", { status: false, message: "Invalid/Missing token" })
