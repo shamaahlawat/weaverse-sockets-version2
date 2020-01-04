@@ -14,7 +14,7 @@ export const roomJoin = (socket, io, msg) => {
         })
 
     } else {
-        socket.sockets.emit('room_join', { status: false, message: "Invalid/Missing data" });
+        socket.emit('room_join', { status: false, message: "Invalid/Missing data" });
         console.log("----------------------> after emmit room_join", { status: false, message: "Invalid/Missing data" })
     }
 }
@@ -34,7 +34,7 @@ export const roomLeave = (socket, io, msg) => {
             return
         })
     } else {
-        socket.sockets.emit('room_leave', { status: false, message: "Invalid/Missing data" });
+        socket.emit('room_leave', { status: false, message: "Invalid/Missing data" });
         console.log("----------------------> after emmit room_leave", { status: false, message: "Invalid/Missing data" })
     }
 
@@ -56,7 +56,7 @@ export const workspaceRoomJoin = (socket, io, msg) => {
             return
         })
     } else {
-        socket.sockets.emit('workspace_room_join', { status: false, message: "Invalid/Missing data" });
+        socket.emit('workspace_room_join', { status: false, message: "Invalid/Missing data" });
         console.log("----------------------> after emmit workspace_room_join", { status: false, message: "Invalid/Missing data" })
     }
 
