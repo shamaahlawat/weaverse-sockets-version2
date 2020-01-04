@@ -29,18 +29,20 @@ export const getRoom = async (socket, io, data) => {
                 console.log("----------------------> after emmit get_user_room", { status: true, room_id: room._id })
 
                 return
+            } else {
+                let roomjson = new Room({
+                    "senderId": data.sender_id,
+                    "receiverId": data.receiver_id,
+                    "workspaceId": data.workspace_id,
+                });
+
+                await roomjson.save();
+                io.sockets.emit('get_user_room', { status: true, room_id: roomjson._id });
+                console.log("----------------------> after emmit get_user_room", { status: true, room_id: roomjson._id })
+                return
             }
 
-            let roomjson = new Room({
-                "senderId": data.sender_id,
-                "receiverId": data.receiver_id,
-                "workspaceId": data.workspace_id,
-            });
 
-            await roomjson.save();
-            io.sockets.emit('get_user_room', { status: true, room_id: roomjson._id });
-            console.log("----------------------> after emmit get_user_room", { status: true, room_id: roomjson._id })
-            return
         } else {
             io.sockets.emit('get_user_room', { status: false, message: "Invalid/Missing data" });
             console.log("----------------------> after emmit get_user_room", { status: false, message: "Invalid/Missing data" })
