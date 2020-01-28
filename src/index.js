@@ -18,7 +18,6 @@ const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
     // intercept OPTIONS method
     if ('OPTIONS' == req.method) {
       res.send(200);
@@ -27,10 +26,11 @@ const allowCrossDomain = function(req, res, next) {
       next();
     }
 };
+const io = require('socket.io')(server, { origins: '*:*'});
 
 const app = express();
 const server = http.Server(app);
-const io = SocketIO(server);
+//const io = SocketIO(server);
 app.use(cors())
 app.use(allowCrossDomain);
 
