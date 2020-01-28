@@ -11,6 +11,11 @@ import {
     workspaceRoomJoin,
     roomLeave
 } from "./controller";
+const app = express();
+const server = http.Server(app);
+//const io = SocketIO(server);
+const io = require('socket.io')(server, { origins: '*:*'});
+// const socket = SocketIO('http://localhost:3000', {transports: ['websocket', 'polling', 'flashsocket']})
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -26,7 +31,6 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
   }
 }
-
 app.use(cors(corsOptions));
 
 // const allowCrossDomain = function(req, res, next) {
@@ -41,11 +45,7 @@ app.use(cors(corsOptions));
 //       next();
 //     }
 // };
-const io = require('socket.io')(server, { origins: '*:*'});
 
-const app = express();
-const server = http.Server(app);
-//const io = SocketIO(server);
 app.use(cors())
 // app.use(allowCrossDomain);
 
