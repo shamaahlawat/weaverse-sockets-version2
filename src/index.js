@@ -2,8 +2,6 @@ import express from "express";
 import SocketIO from "socket.io"
 import http from "http"
 import cors from 'cors'
-
-
 import './db';
 import {
     roomJoin,
@@ -14,30 +12,44 @@ import {
     roomLeave
 } from "./controller";
 
-const allowCrossDomain = function(req, res, next) {
+app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    }
-    else {
-      next();
-    }
-};
+    next();
+  });
+
+const whitelist = ['http://localhost:3000'];
+const corsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    if(whitelist.includes(origin))
+      return callback(null, true)
+      callback(new Error('Not allowed by CORS'));
+  }
+}
+
+app.use(cors(corsOptions));
+
+// const allowCrossDomain = function(req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+//     // intercept OPTIONS method
+//     if ('OPTIONS' == req.method) {
+//       res.send(200);
+//     }
+//     else {
+//       next();
+//     }
+// };
 const io = require('socket.io')(server, { origins: '*:*'});
 
 const app = express();
 const server = http.Server(app);
 //const io = SocketIO(server);
 app.use(cors())
-app.use(allowCrossDomain);
+// app.use(allowCrossDomain);
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
+
 
 const { PORT = 8080 } = process.env;
 server.listen(PORT, () => console.log(`Chat Listening on port ${PORT}`)); // eslint-disable-line no-console
