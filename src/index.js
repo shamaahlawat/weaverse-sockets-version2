@@ -6,12 +6,13 @@ import cors from 'cors'
 
 import './db';
 import {
-    roomJoin,
-    onMessage,
-    onAuth,
-    getRoom,
-    workspaceRoomJoin,
-    roomLeave
+  roomJoin,
+  roomJoin1,
+  onMessage,
+  onAuth,
+  getRoom,
+  workspaceRoomJoin,
+  roomLeave
 } from "./controller";
 
 
@@ -25,51 +26,57 @@ const { PORT = 8080 } = process.env;
 server.listen(PORT, () => console.log(`Chat Listening on port ${PORT}`)); // eslint-disable-line no-console
 
 app.get("/", (req, res) => {
-    res.send("Running")
-    console.log(req)
+  res.send("Running")
+  console.log(req)
 })
 
 io.on('connection', (socket) => {
-    console.log('--------------------->connected', socket.id);
-    //authenticate user 
+  console.log('--------------------->connected', socket.id);
+  //authenticate user 
 
-    // socket.on('authentication', (userToken) => {
-    //     console.log('---------------------->authentication', { userToken })
-    //     onAuth(socket, io, userToken.token)
-    // })
+  // socket.on('authentication', (userToken) => {
+  //     console.log('---------------------->authentication', { userToken })
+  //     onAuth(socket, io, userToken.token)
+  // })
 
-    // Workspace Join the room
-    socket.on("workspace_room_join", (msg) => {
-        console.log('------------------------->workspace_room_join', { msg })
-        workspaceRoomJoin(socket, io, msg)
-    })
+  // Workspace Join the room
+  socket.on("workspace_room_join", (msg) => {
+    console.log('------------------------->workspace_room_join', { msg })
+    workspaceRoomJoin(socket, io, msg)
+  })
 
-    //get user room id
-    socket.on("get_user_room", (msg) => {
-        console.log('------------------------->get_user_room', { msg })
-        getRoom(socket, io, msg)
-    })
+  //get user room id
+  socket.on("get_user_room", (msg) => {
+    console.log('------------------------->get_user_room', { msg })
+    getRoom(socket, io, msg)
+  })
 
 
-    // Join the room
-    socket.on("room_join", (msg) => {
-        console.log('------------------------->room_join', { msg })
-        roomJoin(socket, io, msg)
-    })
-    // Join the room leave
-    socket.on("room_leave", (msg) => {
-        console.log('------------------------->room_leave', { msg })
-        roomLeave(socket, io, msg)
-    })
-    // on message send
-    socket.on("message", (msg) => {
-        console.log('------------------------->message', { msg })
-        onMessage(socket, io, msg)
-    })
+  // Join the room
+  socket.on("room_join", (msg) => {
+    console.log('------------------------->room_join', { msg })
+    roomJoin(socket, io, msg)
+  })
 
-    socket.on('disconnect', () => {
-        console.log('--------------------------->user disconnected', socket.id);
-    });
+  // Join the room
+  socket.on("room_join1", (msg) => {
+    console.log('------------------------->room_join', msg)
+    roomJoin1(socket, io, msg)
+  })
+  // Join the room leave
+  socket.on("room_leave", (msg) => {
+    console.log('------------------------->room_leave', { msg })
+    roomLeave(socket, io, msg)
+  })
+  // on message send
+  socket.on("message", (msg) => {
+    console.log('------------------------->message', { msg })
+    onMessage(socket, io, msg)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('--------------------------->user disconnected', socket.id);
+  });
 });
 
 

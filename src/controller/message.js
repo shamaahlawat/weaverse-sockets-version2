@@ -9,11 +9,40 @@ export const onMessage = async (socket, io, msg) => {
             //     console.log("----------------------> after emmit message", { status: false, message: "Invalid/Missing token" })
             //     return
             // }
+            var criteria = {
+                workspaceId: msg.workspace_id,
+                $or: [{
+                    $and: [{
+                        "senderId": msg.sender_id
+                    }, {
+                        "receiverId": msg.receiver_id
+                    }]
+                }, {
+                    $and: [{
+                        "receiverId": msg.sender_id
+                    }, {
+                        "senderId": msg.receiver_id
+                    }]
+                }]
+            }
+            let chat = await Chat.findOne(criteria)
+                .populate([
+                    {
+                        path: "receiverId",
+                        select: 'firstName lastName picture'
+                    },
+                    {
+                        path: "senderId",
+                        select: 'firstName lastName picture'
+                    },
+                ])
             let chatData = {
+                senderId: chat && chat.senderId,
+                receiverId: chat && chat.receiverId,
                 roomId: msg.room_id,
                 workspaceId: msg.workspace_id,
-                senderId: msg.sender_id,
-                receiverId: msg.receiver_id,
+                // senderId: msg.sender_id,
+                // receiverId: msg.receiver_id,
                 message: msg.chat,
                 messageType: 'text',
                 status: 'unseen',
