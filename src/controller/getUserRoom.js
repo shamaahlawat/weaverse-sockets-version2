@@ -26,7 +26,7 @@ export const getRoom = async (socket, io, data) => {
             let room = await Room.findOne(roomCriteria)
             if (room) {
                 socket.emit('get_user_room', { status: true, room_id: room._id });
-                console.log("----------------------> after emmit get_user_room", { status: true, room_id: room._id })
+                console.log("----------------------> ", { status: true, room_id: room._id })
                 return
             } else {
                 let roomjson = new Room({
