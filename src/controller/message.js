@@ -37,8 +37,8 @@ export const onMessage = async (socket, io, msg) => {
                     },
                 ])
             let chatData = {
-                senderId: chat && chat.receiverId,
-                receiverId: chat && chat.senderId,
+                senderId: chat && chat.senderId,
+                receiverId: chat && chat.receiverId,
                 roomId: msg.room_id,
                 workspaceId: msg.workspace_id,
                 // senderId: msg.sender_id,
