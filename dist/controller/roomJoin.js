@@ -22,6 +22,18 @@ const roomJoin = exports.roomJoin = (socket, io, msg) => {
         console.log("----------------------> after emmit room_join", { status: false, message: "Invalid/Missing data" });
     }
 };
+const roomJoin1 = exports.roomJoin1 = (socket, io, data) => {
+    const { room_ids = [] } = data;
+    if (room_ids.length) {
+        for (const i in room_ids) {
+            socket.join(room_ids[i], () => {
+                io.in(room_ids[i]).emit("room_join", { status: true, msg: "room join", room_id: room_ids[i] });
+                console.log("----------------------> after emmit room_join", { status: true, msg: "room join", room_id: room_ids[i] });
+                return;
+            });
+        }
+    }
+};
 
 const roomLeave = exports.roomLeave = (socket, io, msg) => {
     if (msg.room_id) {

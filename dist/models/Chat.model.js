@@ -25,7 +25,7 @@ const ChatSchema = new _db2.default.Schema({
     receiverId: {
         type: _db2.default.Schema.Types.ObjectId,
         ref: "Users",
-        required: true
+        required: false
     },
     message: {
         type: String,
