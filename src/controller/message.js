@@ -36,8 +36,9 @@ export const onMessage = async (socket, io, msg) => {
                         select: 'firstName lastName picture'
                     },
                 ])
+            let ChannelChatData = await User.findOne({ _id: msg.sender_id })
             let chatData = {
-                senderId: chat && chat.senderId,
+                senderId: ChannelChatData,
                 receiverId: chat && chat.receiverId,
                 roomId: msg.room_id,
                 workspaceId: msg.workspace_id,
