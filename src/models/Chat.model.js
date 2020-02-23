@@ -35,6 +35,10 @@ const ChatSchema = new mongoose.Schema(
             enum: ['text', 'file'],
             default: 'text'
         },
+        fileType: {
+            type: String,
+            default: 'text'
+        },
         status: {
             type: String,
             enum: ['seen', 'unseen'],
