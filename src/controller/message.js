@@ -45,12 +45,13 @@ export const onMessage = async (socket, io, msg) => {
                 ])
             let ChannelChatData = await User.findOne({ _id: msg.sender_id })
             if (msg.msgType === "file") {
-                let buf = new Buffer(msg.chat.replace(/^data:image\/\w+;base64,/, ""), 'base64')
+                // let buf = new Buffer.from(msg.chat.replace(/^data:image\/\w+;base64,/, ""), 'base64')
                 var uploadData = {
                     Bucket: 'weaversefile',
-                    Key: `${Date.now()}RI${msg.room_id}UI${msg.sender_id}F${msg.fileName}`,
-                    Body: buf,
-                    ContentEncoding: 'base64',
+                    // Key: `${Date.now()}RI${msg.room_id}UI${msg.sender_id}F${msg.fileName}`,
+                    Key: `${Date.now()}${msg.fileName}`,
+                    Body: msg.chat,
+                    // ContentEncoding: 'base64',
                     ContentType: msg.fileType
                 };
                 s3Bucket.upload(uploadData, async function (err, resp) {
@@ -66,6 +67,7 @@ export const onMessage = async (socket, io, msg) => {
                             message: resp.Location,
                             messageType: msg.msgType,
                             fileType: msg.fileType,
+                            fileName: msg.fileName,
                             status: 'unseen',
                             createdAt: new Date().toISOString()
                         }
@@ -77,6 +79,7 @@ export const onMessage = async (socket, io, msg) => {
                             message: resp.Location,
                             messageType: msg.msgType,
                             fileType: msg.fileType,
+                            fileName: msg.fileName,
                             status: 'unseen',
                             createdAt: new Date().toISOString()
                         }
@@ -131,12 +134,14 @@ export const onMessage = async (socket, io, msg) => {
                 console.log("ChannelChatData=============", ChannelChatData)
                 const { firstName, lastName, email, phone } = ChannelChatData
                 if (msg.msgType === "file") {
-                    let buf = new Buffer(msg.chat.replace(/^data:image\/\w+;base64,/, ""), 'base64')
+                    // let buf = new Buffer(msg.chat.replace(/^data:image\/\w+;base64,/, ""), 'base64')
                     let channeluploadData = {
                         Bucket: 'weaversefile',
-                        Key: `${Date.now()}RI${msg.room_id}UI${msg.sender_id}F${msg.fileName}`,
-                        Body: buf,
-                        ContentEncoding: 'base64',
+                        // Key: `${Date.now()}RI${msg.room_id}UI${msg.sender_id}F${msg.fileName}`,
+                        Key: `${Date.now()}${msg.fileName}`,
+                        Body: msg.chat,
+                        // Body: buf,
+                        // ContentEncoding: 'base64',
                         ContentType: msg.fileType
                     };
                     s3Bucket.upload(channeluploadData, async function (err, resp) {
@@ -150,6 +155,7 @@ export const onMessage = async (socket, io, msg) => {
                                 lastName, email, phone,
                                 messageType: msg.msgType,
                                 fileType: msg.fileType,
+                                fileName: msg.fileName,
                                 message: resp.Location
                             }
                             io.in(msg.room_id).emit("message", { status: true, chatData: userdata })
@@ -160,6 +166,7 @@ export const onMessage = async (socket, io, msg) => {
                                 message: resp.Location,
                                 messageType: msg.msgType,
                                 fileType: msg.fileType,
+                                fileName: msg.fileName,
                                 status: 'unseen',
                                 createdAt: new Date().toISOString()
                             }
