@@ -43,6 +43,7 @@ const ChatSchema = new mongoose.Schema(
             type: String,
             default: 'text'
         },
+        msgSeenBy: [],
         status: {
             type: String,
             enum: ['seen', 'unseen'],

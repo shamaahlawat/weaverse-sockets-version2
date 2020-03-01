@@ -59,18 +59,7 @@ export const onMessage = async (socket, io, msg) => {
                         console.log(err);
                         console.log('Error uploading data: ', resp);
                     } else {
-                        let chatUploadData = {
-                            senderId: ChannelChatData,
-                            receiverId: chat && chat.receiverId,
-                            roomId: msg.room_id,
-                            workspaceId: msg.workspace_id,
-                            message: resp.Location,
-                            messageType: msg.msgType,
-                            fileType: msg.fileType,
-                            fileName: msg.fileName,
-                            status: 'unseen',
-                            createdAt: new Date().toISOString()
-                        }
+
                         let uploadchatData1 = {
                             roomId: msg.room_id,
                             workspaceId: msg.workspace_id,
@@ -83,11 +72,27 @@ export const onMessage = async (socket, io, msg) => {
                             status: 'unseen',
                             createdAt: new Date().toISOString()
                         }
-                        io.in(msg.room_id).emit("message", { status: true, chatData: chatUploadData })
-                        delete (uploadchatData1.createdAt)
+
+                        // delete (uploadchatData1.createdAt)
                         const myData = new Chat(uploadchatData1);
-                        //   myData.save()
                         let saveData = await myData.save()
+                        let chatUploadData = {
+                            senderId: ChannelChatData,
+                            receiverId: chat && chat.receiverId,
+                            roomId: msg.room_id,
+                            workspaceId: msg.workspace_id,
+                            message: resp.Location,
+                            messageType: msg.msgType,
+                            fileType: msg.fileType,
+                            fileName: msg.fileName,
+                            status: 'unseen',
+                            createdAt: new Date().toISOString(),
+                            message_id: saveData._id
+
+                        }
+                        //   myData.save()
+
+                        io.in(msg.room_id).emit("message", { status: true, chatData: chatUploadData })
                         console.log('succesfully uploaded the image!resp', saveData);
                         console.log('succesfully uploaded the image!', resp);
                     }
@@ -96,18 +101,7 @@ export const onMessage = async (socket, io, msg) => {
                 return
             }
 
-            let chatData = {
-                senderId: ChannelChatData,
-                receiverId: chat && chat.receiverId,
-                roomId: msg.room_id,
-                workspaceId: msg.workspace_id,
-                // senderId: msg.sender_id,
-                // receiverId: msg.receiver_id,
-                message: msg.chat,
-                messageType: 'text',
-                status: 'unseen',
-                createdAt: new Date().toISOString()
-            }
+
             let chatData1 = {
                 roomId: msg.room_id,
                 workspaceId: msg.workspace_id,
@@ -118,21 +112,34 @@ export const onMessage = async (socket, io, msg) => {
                 status: 'unseen',
                 createdAt: new Date().toISOString()
             }
-            io.in(msg.room_id).emit("message", { status: true, chatData })
-            console.log("----------------------> after emmit message", { status: true, chatData })
-            delete (chatData1.createdAt)
+
+            // delete (chatData1.createdAt)
             var myData = new Chat(chatData1);
             //   myData.save()
-            let data = await myData.save()
-            console.log("lksjdfljsdf", data)
+            let saveMsgData = await myData.save()
+            console.log("lksjdfljsdf", saveMsgData)
+            let chatData = {
+                senderId: ChannelChatData,
+                receiverId: chat && chat.receiverId,
+                roomId: msg.room_id,
+                workspaceId: msg.workspace_id,
+                // senderId: msg.sender_id,
+                // receiverId: msg.receiver_id,
+                message: msg.chat,
+                messageType: 'text',
+                status: 'unseen',
+                createdAt: new Date().toISOString(),
+                message_id: saveMsgData._id
+            }
+            io.in(msg.room_id).emit("message", { status: true, chatData })
+            console.log("----------------------> after emmit message", { status: true, chatData })
             return
         } else {
             if (msg.isChannel) {
 
                 let ChannelChatData = await User.findOne({ _id: msg.sender_id })
 
-                console.log("ChannelChatData=============", ChannelChatData)
-                const { firstName, lastName, email, phone } = ChannelChatData
+                const { firstName, lastName, email, phone, picture } = ChannelChatData
                 if (msg.msgType === "file") {
                     // let buf = new Buffer(msg.chat.replace(/^data:image\/\w+;base64,/, ""), 'base64')
                     let channeluploadData = {
@@ -149,16 +156,8 @@ export const onMessage = async (socket, io, msg) => {
                             console.log(err);
                             console.log('Error uploading data: ', resp);
                         } else {
-                            let userdata = {
-                                ...msg,
-                                firstName,
-                                lastName, email, phone,
-                                messageType: msg.msgType,
-                                fileType: msg.fileType,
-                                fileName: msg.fileName,
-                                message: resp.Location
-                            }
-                            io.in(msg.room_id).emit("message", { status: true, chatData: userdata })
+
+
                             let chatData1 = {
                                 roomId: msg.room_id,
                                 workspaceId: msg.workspace_id,
@@ -167,21 +166,37 @@ export const onMessage = async (socket, io, msg) => {
                                 messageType: msg.msgType,
                                 fileType: msg.fileType,
                                 fileName: msg.fileName,
+                                msgSeenBy: [msg.sender_id],
                                 status: 'unseen',
                                 createdAt: new Date().toISOString()
                             }
-                            delete (chatData1.createdAt)
-                            let myDbData = new Chat(chatData1);
+                            // delete (chatData1.createdAt)
+                            let mycDbData = new Chat(chatData1);
                             //   myData.save()
-                            await myDbData.save()
+                            let finalchanneldata = await mycDbData.save()
+                            delete msg.chat
+                            let userdata = {
+                                ...msg,
+                                firstName,
+                                lastName, email, phone, picture,
+                                messageType: msg.msgType,
+                                fileType: msg.fileType,
+                                fileName: msg.fileName,
+                                message: resp.Location,
+                                msgSeenBy: [msg.sender_id],
+                                message_id: finalchanneldata._id
+                            }
+                            console.log("userdata", userdata, finalchanneldata)
+                            if (finalchanneldata._id) {
+
+                                io.in(msg.room_id).emit("message", { status: true, chatData: userdata })
+                            }
                             console.log('succesfully uploaded the image!', resp);
                         }
                     });
 
                     return
                 }
-                let userdata = { ...msg, firstName, lastName, email, phone, messageType: "text", message: msg.chat }
-                io.in(msg.room_id).emit("message", { status: true, chatData: userdata })
                 let chatData1 = {
                     roomId: msg.room_id,
                     workspaceId: msg.workspace_id,
@@ -189,12 +204,21 @@ export const onMessage = async (socket, io, msg) => {
                     message: msg.chat,
                     messageType: 'text',
                     status: 'unseen',
+                    msgSeenBy: [msg.sender_id],
                     createdAt: new Date().toISOString()
                 }
-                delete (chatData1.createdAt)
+                // delete (chatData1.createdAt)
                 let myDbData = new Chat(chatData1);
                 //   myData.save()
-                await myDbData.save()
+                let finaldata = await myDbData.save()
+                console.log("ChannelChatData=============", finaldata)
+                let userdata = {
+                    ...msg, message_id: finaldata._id,
+                    msgSeenBy: [msg.sender_id], firstName, lastName, email, phone, picture, messageType: "text", message: msg.chat
+                }
+                io.in(msg.room_id).emit("message", { status: true, chatData: userdata })
+
+
                 return
             }
             socket.emit('message', { status: false, message: "Invalid/Missing data" });

@@ -9,6 +9,7 @@ import {
   roomJoin,
   roomJoin1,
   onMessage,
+  messageSeenByUser,
   onAuth,
   getRoom,
   workspaceRoomJoin,
@@ -72,6 +73,11 @@ io.on('connection', (socket) => {
   socket.on("message", (msg) => {
     console.log('------------------------->message', { msg })
     onMessage(socket, io, msg)
+  })
+  // on message seen by
+  socket.on("msg_seen_by", (msg) => {
+    console.log('------------------------->msg_seen_by', { msg })
+    messageSeenByUser(socket, io, msg)
   })
 
   socket.on('disconnect', () => {
