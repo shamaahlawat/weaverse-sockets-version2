@@ -52,7 +52,7 @@ export const onMessage = async (socket, io, msg) => {
                     Key: `${Date.now()}${msg.fileName}`,
                     Body: msg.chat,
                     // ContentEncoding: 'base64',
-                    ContentType: msg.fileType
+                    // ContentType: msg.fileType
                 };
                 s3Bucket.upload(uploadData, async function (err, resp) {
                     if (err) {
@@ -69,6 +69,7 @@ export const onMessage = async (socket, io, msg) => {
                             messageType: msg.msgType,
                             fileType: msg.fileType,
                             fileName: msg.fileName,
+                            fileSize: msg.fileSize,
                             status: 'unseen',
                             createdAt: new Date().toISOString()
                         }
@@ -85,6 +86,7 @@ export const onMessage = async (socket, io, msg) => {
                             messageType: msg.msgType,
                             fileType: msg.fileType,
                             fileName: msg.fileName,
+                            fileSize: msg.fileSize,
                             status: 'unseen',
                             createdAt: new Date().toISOString(),
                             message_id: saveData._id
@@ -149,7 +151,7 @@ export const onMessage = async (socket, io, msg) => {
                         Body: msg.chat,
                         // Body: buf,
                         // ContentEncoding: 'base64',
-                        ContentType: msg.fileType
+                        // ContentType: msg.fileType
                     };
                     s3Bucket.upload(channeluploadData, async function (err, resp) {
                         if (err) {
@@ -166,6 +168,7 @@ export const onMessage = async (socket, io, msg) => {
                                 messageType: msg.msgType,
                                 fileType: msg.fileType,
                                 fileName: msg.fileName,
+                                fileSize: msg.fileSize,
                                 msgSeenBy: [msg.sender_id],
                                 status: 'unseen',
                                 createdAt: new Date().toISOString()
@@ -182,6 +185,7 @@ export const onMessage = async (socket, io, msg) => {
                                 messageType: msg.msgType,
                                 fileType: msg.fileType,
                                 fileName: msg.fileName,
+                                fileSize: msg.fileSize,
                                 message: resp.Location,
                                 msgSeenBy: [msg.sender_id],
                                 message_id: finalchanneldata._id
