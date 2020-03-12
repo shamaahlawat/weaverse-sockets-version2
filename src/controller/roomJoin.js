@@ -75,4 +75,17 @@ export const workspaceRoomJoin = (socket, io, msg) => {
     }
 
 
+}
+export const userOnlineOffline = (socket, io, msg) => {
+
+    if (msg.workspace_id) {
+
+        socket.emit('forward_online_offline', { status: true, ...msg });
+        return
+    } else {
+        socket.emit('workspace_room_join', { status: false, message: "Invalid/Missing data" });
+        console.log("----------------------> after emmit workspace_room_join", { status: false, message: "Invalid/Missing data" })
+    }
+
+
 } 

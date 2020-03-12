@@ -13,7 +13,8 @@ import {
   onAuth,
   getRoom,
   workspaceRoomJoin,
-  roomLeave
+  roomLeave,
+  userOnlineOffline
 } from "./controller";
 
 
@@ -23,7 +24,7 @@ const io = SocketIO(server);
 app.use(cors())
 
 
-const { PORT = 8080 } = process.env;
+const { PORT = 8081 } = process.env;
 server.listen(PORT, () => console.log(`Chat Listening on port ${PORT}`)); // eslint-disable-line no-console
 
 app.get("/", (req, res) => {
@@ -78,6 +79,10 @@ io.on('connection', (socket) => {
   socket.on("msg_seen_by", (msg) => {
     console.log('------------------------->msg_seen_by', { msg })
     messageSeenByUser(socket, io, msg)
+  })
+  socket.on("user_online_offline", (msg) => {
+    console.log('------------------------->user_online_offline', { msg })
+    userOnlineOffline(socket, io, msg)
   })
 
   socket.on('disconnect', () => {
