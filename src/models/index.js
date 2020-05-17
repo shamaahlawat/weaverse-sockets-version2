@@ -4,6 +4,7 @@ import Channel from "./Channel.model";
 import Room from "./Room.model";
 import Chat from "./Chat.model";
 import ChannelChat from "./ChannelChat.model";
+import Token from "./token.model";
 
 export {
     User,
@@ -11,5 +12,6 @@ export {
     Channel,
     Room,
     Chat,
-    ChannelChat
+    ChannelChat,
+    Token
 };

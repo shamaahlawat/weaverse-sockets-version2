@@ -1,8 +1,7 @@
-import { roomJoin, roomJoin1, workspaceRoomJoin, roomLeave, userOnlineOffline } from "./roomJoin";
+import { roomJoin, roomJoin1, workspaceRoomJoin, roomLeave } from "./roomJoin";
 import { onMessage } from "./message";
 import { onAuth } from "./auth";
 import { getRoom } from "./getUserRoom";
-import { messageSeenByUser } from "./msgSeenByUser";
 
 export {
     roomJoin,
@@ -11,7 +10,5 @@ export {
     onAuth,
     workspaceRoomJoin,
     getRoom,
-    roomLeave,
-    messageSeenByUser,
-    userOnlineOffline
+    roomLeave
 }
