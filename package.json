@@ -27,7 +27,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "cors": "^2.8.5",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.2.15",
     "rimraf": "^3.0.0",
